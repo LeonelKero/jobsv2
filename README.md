@@ -22,6 +22,9 @@ This is a microservice application is a remake of previous project, made using d
 ## Topics
 
 * Rest API
+* Spring Boot Autoconfiguration
+* IoC, Dependency Injection
+* Spring annotations
 * n-tier architecture
 * Development profiles (dev, pro)
 * Service communication
