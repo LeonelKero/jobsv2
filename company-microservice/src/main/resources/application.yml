@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: review-microservice
+  profiles:
+    active:
+      - pro
+
+server:
+  port: 8082

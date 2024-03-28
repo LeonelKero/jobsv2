@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: job-microservice
+  profiles:
+    active:
+      - prod
+
+
+server:
+  port: 8081
