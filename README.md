@@ -17,6 +17,7 @@ This is a microservice application is a remake of previous project, made using d
 * H2
 * Postgresql
 * Actuator
+* Docker
 
 ## Topics
 
@@ -24,6 +25,7 @@ This is a microservice application is a remake of previous project, made using d
 * n-tier architecture
 * Development profiles (dev, pro)
 * Service communication
+* docker compose file
 
 ## Credit
  `Happy Coding 🔥`

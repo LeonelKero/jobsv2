@@ -1,1 +1,11 @@
-spring.application.name=review-microservice
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/review
+    username: postgres
+    password: postgres
+  jpa:
+    database: POSTGRESQL
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
