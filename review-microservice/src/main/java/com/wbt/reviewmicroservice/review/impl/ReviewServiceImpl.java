@@ -1,13 +1,14 @@
 package com.wbt.reviewmicroservice.review.impl;
 
-import com.wbt.reviewmicroservice.review.*;
+import com.wbt.reviewmicroservice.review.Review;
+import com.wbt.reviewmicroservice.review.ReviewRepository;
+import com.wbt.reviewmicroservice.review.ReviewService;
+import com.wbt.reviewmicroservice.review.dto.ReviewRequest;
 import com.wbt.reviewmicroservice.review.dto.ReviewResponse;
 import com.wbt.reviewmicroservice.review.util.EntityDtoConverter;
-import com.wbt.reviewmicroservice.review.dto.ReviewRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
