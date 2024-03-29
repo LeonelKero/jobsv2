@@ -52,7 +52,7 @@ class ReviewJpaServiceTest {
     @Test
     void fetchById() {
         // GIVEN
-        final var existingReviewId = 1l;
+        final var existingReviewId = 1L;
         // WHEN
         underTest.fetchById(existingReviewId);
         // THEN
