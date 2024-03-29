@@ -18,6 +18,7 @@ This is a microservice application is a remake of previous project, made using d
 * Postgresql
 * Actuator
 * Docker
+* TestContainers
 
 ## Topics
 
@@ -29,6 +30,8 @@ This is a microservice application is a remake of previous project, made using d
 * Development profiles (dev, pro)
 * Service communication
 * docker compose file
+* Unit tests
+* Integration tests
 
 ## Credit
  `Happy Coding 🔥`
