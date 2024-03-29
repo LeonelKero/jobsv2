@@ -46,8 +46,8 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public Boolean add(final ReviewRequest request, final Long companyId) {
-        final var savedReview = this.reviewRepository.save(new Review(request.title(), request.content(), request.rating(), companyId));
-        return savedReview.getId() != null;
+        this.reviewRepository.save(new Review(request.title(), request.content(), request.rating(), companyId));
+        return true;
     }
 
     @Override
@@ -55,9 +55,9 @@ public class ReviewServiceImpl implements ReviewService {
         final var existingReview = this.fetchById(reviewId);
         if (existingReview.isPresent()) {
             final var review = existingReview.get();
-            final var newReview = new Review(review.id(), request.title(), review.content(), review.rating(), review.createdAt(), companyId);
-            final var updatedReview = this.reviewRepository.save(newReview);
-            return Objects.equals(updatedReview.getId(), reviewId);
+            final var newReview = new Review(review.id(), request.title(), request.content(), request.rating(), review.createdAt(), companyId);
+            this.reviewRepository.save(newReview);
+            return true;
         }
         return false;
     }
