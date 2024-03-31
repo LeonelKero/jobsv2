@@ -25,6 +25,13 @@ public record CompanyService(CompanyRepository companyRepository) {
                 .map(company -> new CompanyResponse(company.getId(), company.getName(), company.getDescription()));
     }
 
+    public List<CompanyResponse> fetchByName(final String description) {
+        return this.companyRepository.findByDescription(description)
+                .stream()
+                .map(company -> new CompanyResponse(company.getId(), company.getName(), company.getDescription()))
+                .collect(Collectors.toList());
+    }
+
     public Boolean create(final CompanyRequest request) {
         final var name = request.name();
         if (this.companyRepository.existsByName(name))
