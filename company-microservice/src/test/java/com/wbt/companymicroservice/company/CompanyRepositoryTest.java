@@ -42,4 +42,25 @@ class CompanyRepositoryTest {
         // THEN
         assertThat(company).isNotNull();
     }
+
+    @Test
+    void whenCompanyExistsByNameReturnTrue() {
+        // GIVEN
+        final var company = new Company("wbt", "work beats talent");
+        underTest.save(company);
+        // WHEN
+        final var actualResult = underTest.existsByName(company.getName());
+        // THEN
+        assertThat(actualResult).isTrue();
+    }
+
+    @Test
+    void whenCompanyDoNotExistsByNameReturnFalse() {
+        // GIVEN
+        final var nonExisting = "company A";
+        // WHEN
+        final var actualResult = underTest.existsByName(nonExisting);
+        // THEN
+        assertThat(actualResult).isFalse();
+    }
 }

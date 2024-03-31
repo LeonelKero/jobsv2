@@ -29,6 +29,12 @@ public class Company {
         this.description = description;
     }
 
+    public Company(Long id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;

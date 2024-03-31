@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface CompanyRepository extends JpaRepository<Company, Long> {
     List<Company> findByName(final String name);
+    Boolean existsByName(final String name);
 
 }
