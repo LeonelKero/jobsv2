@@ -25,7 +25,7 @@ public record CompanyService(CompanyRepository companyRepository) {
                 .map(company -> new CompanyResponse(company.getId(), company.getName(), company.getDescription()));
     }
 
-    public List<CompanyResponse> fetchByName(final String description) {
+    public List<CompanyResponse> findByDescription(final String description) {
         return this.companyRepository.findByDescription(description)
                 .stream()
                 .map(company -> new CompanyResponse(company.getId(), company.getName(), company.getDescription()))
