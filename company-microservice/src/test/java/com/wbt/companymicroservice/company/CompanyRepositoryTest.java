@@ -38,10 +38,9 @@ class CompanyRepositoryTest {
     @Test
     void findByDescription() {
         // GIVEN // WHEN
-        // Todo: Miss behavior
         final var company = underTest.findByDescription("toto");
         // THEN
-        assertThat(company).isNotNull();
+        assertThat(company).isEmpty();
     }
 
     @Test
