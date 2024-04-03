@@ -19,6 +19,8 @@ This is a microservice application is a remake of previous project, made using d
 * Actuator
 * Docker
 * TestContainers
+* TestRestTemplate
+* WebTestClient
 
 ## Topics
 
