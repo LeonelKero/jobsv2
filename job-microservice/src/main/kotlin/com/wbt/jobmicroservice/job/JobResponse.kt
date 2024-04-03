@@ -1,6 +1,6 @@
 package com.wbt.jobmicroservice.job
 
-import com.wbt.jobmicroservice.job.external.Company
+import com.wbt.jobmicroservice.job.external.CompanyResponse
 import java.time.LocalDateTime
 
 data class JobResponse(
@@ -11,5 +11,5 @@ data class JobResponse(
     val minSalary: Double,
     val createdAt: LocalDateTime,
     val location: String,
-    val company: Company
+    val companyResponse: CompanyResponse
 )

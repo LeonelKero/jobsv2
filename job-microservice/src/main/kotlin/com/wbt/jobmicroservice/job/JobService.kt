@@ -1,7 +1,7 @@
 package com.wbt.jobmicroservice.job
 
 import com.wbt.jobmicroservice.job.exception.JobNotFoundException
-import com.wbt.jobmicroservice.job.external.Company
+import com.wbt.jobmicroservice.job.external.CompanyResponse
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.getForObject
@@ -20,21 +20,6 @@ class JobService(val jobRepository: JobRepository) {
                 toJobResponse(it)
             }.toList()
     }
-
-    private fun toJobResponse(it: Job) = JobResponse(
-        it.id!!,
-        it.title,
-        it.description,
-        it.maxSalary,
-        it.minSalary,
-        it.createdAt!!,
-        it.location,
-        RestTemplate().getForObject(
-            "$companyServiceUrl/{id}",
-            Company::class,
-            it.companyId
-        )
-    )
 
     fun findById(jobId: Long): Optional<JobResponse> {
         val result = jobRepository.findById(jobId)
@@ -61,7 +46,7 @@ class JobService(val jobRepository: JobRepository) {
         return jobs.stream().map { toJobResponse(it) }.toList()
     }
 
-    fun jobsWithLowSalaryRange(minLow: Double, minTop: Double): List<JobResponse> {
+    fun jobsWithMinSalaryRange(minLow: Double, minTop: Double): List<JobResponse> {
         return jobRepository
             .findByMinSalaryBetween(minLow, minTop)
             .stream()
@@ -91,4 +76,19 @@ class JobService(val jobRepository: JobRepository) {
         jobRepository.save(recentJob)
         return true
     }
+
+    private fun toJobResponse(it: Job) = JobResponse(
+        it.id!!,
+        it.title,
+        it.description,
+        it.maxSalary,
+        it.minSalary,
+        it.createdAt!!,
+        it.location,
+        RestTemplate().getForObject(
+            "$companyServiceUrl/{id}",
+            CompanyResponse::class,
+            it.companyId
+        )
+    )
 }
