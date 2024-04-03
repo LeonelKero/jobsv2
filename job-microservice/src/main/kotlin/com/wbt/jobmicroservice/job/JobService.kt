@@ -1,14 +1,14 @@
 package com.wbt.jobmicroservice.job
 
 import com.wbt.jobmicroservice.job.exception.JobNotFoundException
+import com.wbt.jobmicroservice.job.exception.UnSupportedJobOperationException
 import com.wbt.jobmicroservice.job.external.CompanyResponse
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.getForObject
-import java.util.*
 
 @Service
-class JobService(val jobRepository: JobRepository) {
+class JobService(private val jobRepository: JobRepository) {
 
     private val companyServiceUrl: String = "http://localhost:8082/api/v1/companies"
 
@@ -21,10 +21,10 @@ class JobService(val jobRepository: JobRepository) {
             }.toList()
     }
 
-    fun findById(jobId: Long): Optional<JobResponse> {
+    fun findById(jobId: Long): JobResponse {
         val result = jobRepository.findById(jobId)
         if (result.isEmpty) throw JobNotFoundException("Job resource with Id $jobId not found")
-        return result.map { toJobResponse(it) }
+        return result.map { toJobResponse(it) }.get()
     }
 
     fun save(jobRequest: JobRequest, company: Long): Boolean {
@@ -56,15 +56,15 @@ class JobService(val jobRepository: JobRepository) {
 
     fun delete(jobId: Long): Boolean {
         val optionalJob = jobRepository.findById(jobId)
-        if (optionalJob.isEmpty) throw JobNotFoundException("Job resource with Id $jobId not found")
+        if (optionalJob.isEmpty) throw UnSupportedJobOperationException("Job resource with Id $jobId not found")
         jobRepository.delete(optionalJob.get())
         return true
     }
 
     fun update(jobId: Long, jobRequest: JobRequest): Boolean {
         val optionalJob = jobRepository.findById(jobId)
-        if (optionalJob.isEmpty) throw JobNotFoundException("Job resource with Id $jobId not found")
-        var recentJob = Job(
+        if (optionalJob.isEmpty) throw UnSupportedJobOperationException("Job resource with Id $jobId not found")
+        val recentJob = Job(
             id = jobId,
             title = jobRequest.title,
             description = jobRequest.description,
