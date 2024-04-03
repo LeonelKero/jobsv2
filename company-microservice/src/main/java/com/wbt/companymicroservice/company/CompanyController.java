@@ -16,11 +16,11 @@ public record CompanyController(CompanyService companyService) {
     }
 
     @GetMapping(path = {"/{id}"})
-    public ResponseEntity<?> companyById(final @PathVariable(name = "id") Long id) {
+    public ResponseEntity<CompanyResponse> companyById(final @PathVariable(name = "id") Long id) {
         final var optionalCompanyResponse = this.companyService.findById(id);
-        if (optionalCompanyResponse.isPresent())
-            return new ResponseEntity<>(optionalCompanyResponse.get(), HttpStatus.OK);
-        return new ResponseEntity<>("Company resource with id %s not found".formatted(id), HttpStatus.NOT_FOUND);
+        return optionalCompanyResponse
+                .map(companyResponse -> new ResponseEntity<>(companyResponse, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
