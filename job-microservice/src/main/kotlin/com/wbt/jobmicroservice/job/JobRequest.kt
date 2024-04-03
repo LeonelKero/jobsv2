@@ -5,5 +5,6 @@ data class JobRequest(
     val description: String,
     val minSalary: Double,
     val maxSalary: Double,
-    val location: String
+    val location: String,
+    val company: Long
 )
