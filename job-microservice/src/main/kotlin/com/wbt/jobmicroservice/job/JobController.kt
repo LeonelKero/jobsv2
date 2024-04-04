@@ -21,9 +21,9 @@ class JobController(private val jobService: JobService) {
     fun jobsHightSalaries(@PathVariable low: Double, @PathVariable top: Double) =
         ResponseEntity(jobService.jobsWithMaxSalaryRange(low, top), HttpStatus.OK)
 
-    @PostMapping(path = ["/{companyId}"])
-    fun add(@RequestBody job: JobRequest, @PathVariable companyId: Long): ResponseEntity<String> {
-        val isSaved = jobService.save(job, companyId)
+    @PostMapping
+    fun add(@RequestBody job: JobRequest): ResponseEntity<String> {
+        val isSaved = jobService.save(job, job.company)
         if (isSaved) return ResponseEntity.ok("Job successfully saved")
         return ResponseEntity(HttpStatus.BAD_REQUEST)
     }

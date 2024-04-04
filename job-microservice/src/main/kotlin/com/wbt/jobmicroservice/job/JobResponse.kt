@@ -11,5 +11,5 @@ data class JobResponse(
     val minSalary: Double,
     val createdAt: LocalDateTime,
     val location: String,
-    val companyResponse: CompanyResponse
+    val company: CompanyResponse?
 )

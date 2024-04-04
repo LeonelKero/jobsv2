@@ -5,7 +5,6 @@ import com.wbt.jobmicroservice.job.exception.UnSupportedJobOperationException
 import com.wbt.jobmicroservice.job.external.CompanyResponse
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
-import org.springframework.web.client.getForObject
 
 @Service
 class JobService(private val jobRepository: JobRepository) {
@@ -13,18 +12,20 @@ class JobService(private val jobRepository: JobRepository) {
     private val companyServiceUrl: String = "http://localhost:8082/api/v1/companies"
 
     fun findAll(): List<JobResponse> {
+        val restTemplate = RestTemplate()
         return jobRepository
             .findAll()
             .stream()
             .map {
-                toJobResponse(it)
+                toJobResponse(it, restTemplate)
             }.toList()
     }
 
     fun findById(jobId: Long): JobResponse {
         val result = jobRepository.findById(jobId)
+        val restTemplate = RestTemplate()
         if (result.isEmpty) throw JobNotFoundException("Job resource with Id $jobId not found")
-        return result.map { toJobResponse(it) }.get()
+        return result.map { toJobResponse(it, restTemplate) }.get()
     }
 
     fun save(jobRequest: JobRequest, company: Long): Boolean {
@@ -43,14 +44,16 @@ class JobService(private val jobRepository: JobRepository) {
 
     fun jobsWithMaxSalaryRange(maxLow: Double, maxTop: Double): List<JobResponse> {
         val jobs = jobRepository.findByMaxSalaryBetween(maxLow, maxTop)
-        return jobs.stream().map { toJobResponse(it) }.toList()
+        val restTemplate = RestTemplate()
+        return jobs.stream().map { toJobResponse(it, restTemplate) }.toList()
     }
 
     fun jobsWithMinSalaryRange(minLow: Double, minTop: Double): List<JobResponse> {
+        val restTemplate = RestTemplate()
         return jobRepository
             .findByMinSalaryBetween(minLow, minTop)
             .stream()
-            .map { toJobResponse(it) }
+            .map { toJobResponse(it, restTemplate) }
             .toList()
     }
 
@@ -77,7 +80,7 @@ class JobService(private val jobRepository: JobRepository) {
         return true
     }
 
-    private fun toJobResponse(it: Job) = JobResponse(
+    private fun toJobResponse(it: Job, restTemplate: RestTemplate) = JobResponse(
         it.id!!,
         it.title,
         it.description,
@@ -85,10 +88,6 @@ class JobService(private val jobRepository: JobRepository) {
         it.minSalary,
         it.createdAt!!,
         it.location,
-        RestTemplate().getForObject(
-            "$companyServiceUrl/{id}",
-            CompanyResponse::class,
-            it.companyId
-        )
+        restTemplate.getForObject("$companyServiceUrl/{id}", CompanyResponse::class.java, it.companyId)
     )
 }
