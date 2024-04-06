@@ -33,11 +33,6 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-testcontainers'
 	testImplementation 'org.testcontainers:junit-jupiter'
 	testImplementation 'org.testcontainers:postgresql'
-
-//	testImplementation 'com.github.tomakehurst:wiremock-jre8:2.35.1'
-//	testImplementation 'com.maciejwalkowiak.spring:wiremock-spring-boot:2.1.2'
-
-//	testImplementation("com.github.tomakehurst:wiremock:3.0.1")
 }
 
 tasks.withType(KotlinCompile) {
