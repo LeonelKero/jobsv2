@@ -1,30 +1,24 @@
 package com.wbt.jobmicroservice.job
 
-import com.github.tomakehurst.wiremock.client.WireMock
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration
-import com.github.tomakehurst.wiremock.junit5.WireMockExtension
-import com.github.tomakehurst.wiremock.junit5.WireMockTest
 import com.wbt.jobmicroservice.job.config.AbstractTestContainerTest
+import com.wbt.jobmicroservice.job.external.CompanyResponse
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.junit.jupiter.api.extension.RegisterExtension
 import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
+import org.mockito.Mockito
 import org.mockito.junit.jupiter.MockitoExtension
-import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
-import org.springframework.test.context.DynamicPropertyRegistry
-import org.springframework.test.context.DynamicPropertySource
+import org.springframework.web.client.RestTemplate
 import java.time.LocalDateTime
 import java.util.*
 
 @ExtendWith(MockitoExtension::class)
-@WireMockTest
 class JobServiceTest : AbstractTestContainerTest() {
+
+    @Mock
+    private lateinit var restTemplate: RestTemplate
 
     @InjectMocks
     private lateinit var underTest: JobService
@@ -32,25 +26,9 @@ class JobServiceTest : AbstractTestContainerTest() {
     @Mock
     private lateinit var jobRepository: JobRepository
 
-    // CONFIGURE WIREMOCK
-    companion object {
-        @JvmStatic
-        @RegisterExtension
-        private val wireMockServer = WireMockExtension
-            .newInstance()
-            .options(WireMockConfiguration.wireMockConfig().dynamicPort())
-            .build()
-    }
-
-    @DynamicPropertySource
-    fun configureProperties(registry: DynamicPropertyRegistry): Unit {
-        registry.add("http://localhost:8082/api/v1/companies", wireMockServer::baseUrl)
-    }
-    // END CONFIGURE WIREMOCK
-
     @BeforeEach
     fun setUp() {
-        underTest = JobService(jobRepository)
+        underTest = JobService(jobRepository, restTemplate)
     }
 
     @Test
@@ -61,69 +39,44 @@ class JobServiceTest : AbstractTestContainerTest() {
 
     @Test
     fun findAll() {
-        // GIVEN // WHEN
-        underTest.findAll()
-        // THEN
-        verify(jobRepository).findAll()
-    }
-
-    data class CompanyRequest(private val name: String, private val description: String)
-
-    @Test
-    fun findById() {
-        /*
-            TODO: NEVER DO THAT
-            FOR THIS TEST TO WORK
-            EXTERNAL SERVICE SHOULD BE UP AND RUNNING - AND WITH ACCESS TO  ITS DATABASE
-         */
         // GIVEN
-        val id = 1L
-        val companyId = 1L
-        val job = Job(
-            id,
-            "Java developer",
-            "Intermediate java developer",
-            1400.0,
-            3_000.0,
-            LocalDateTime.now(),
-            LocalDateTime.now(),
-            "Douala",
-            companyId
-        )
-        `when`(jobRepository.findById(id)).thenReturn(Optional.of(job))
-        // WHEN
-        val actualResult = underTest.findById(id)
-        // THEN
-        verify(jobRepository).findById(id)
-        assertThat(actualResult).isNotNull
-    }
-
-    @Test
-    fun whenFetchJobByIdGetCorrespondingCompany() { // Happy path (external service is up and running)
-        // Given
-        // first mock external api service call
-        wireMockServer.stubFor(
-            WireMock.get(WireMock.urlMatching("/.*")).willReturn(
-                WireMock
-                    .aResponse()
-                    .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                    .withStatus(HttpStatus.OK.value())
-                    .withBody(
-                        """
-                        {
-                          "id": 1,
-                          "name": "PlayStation",
-                          "description": "The game is just a start"
-                        }
-                    """.trimIndent()
-                    )
+        Mockito.`when`(jobRepository.findAll()).thenReturn(
+            listOf(
+                Job(
+                    1L,
+                    "Java developer",
+                    "Intermediate java developer",
+                    1400.0,
+                    3_000.0,
+                    LocalDateTime.now(),
+                    LocalDateTime.now(),
+                    "Douala",
+                    1L
+                )
             )
         )
-        // Prepare request object and mock service call
-        val id = 1L
+        Mockito.`when`(
+            restTemplate.getForObject(
+                "http://localhost:8082/api/v1/companies/{id}",
+                CompanyResponse::class.java,
+                1L
+            )
+        ).thenReturn(
+            CompanyResponse(1L, "wbt", "work beats talent")
+        )
+        // WHEN
+        underTest.findAll()
+        // THEN
+        Mockito.verify(jobRepository).findAll()
+    }
+
+    @Test
+    fun whenFindJoBbyIdAlsoGetRelatedExistingCompanyDetail() {
+        // GIVEN
         val companyId = 1L
+        val jobId = 1L
         val job = Job(
-            id,
+            jobId,
             "Java developer",
             "Intermediate java developer",
             1400.0,
@@ -133,13 +86,21 @@ class JobServiceTest : AbstractTestContainerTest() {
             "Douala",
             companyId
         )
-        `when`(jobRepository.findById(id)).thenReturn(Optional.of(job))
+
+        Mockito.`when`(jobRepository.findById(jobId)).thenReturn(Optional.of(job))
+
+        Mockito.`when`(
+            restTemplate.getForObject(
+                "http://localhost:8082/api/v1/companies/{id}",
+                CompanyResponse::class.java,
+                companyId
+            )
+        ).thenReturn(CompanyResponse(companyId, "wbt", "work beats talent"))
         // WHEN
-        val actualResult = underTest.findById(id)
+        val response = underTest.findById(jobId)
         // THEN
-        verify(jobRepository).findById(id)
-        assertThat(actualResult).isNotNull
-        assertThat(actualResult.company).isNotNull
+        Mockito.verify(jobRepository).findById(jobId)
+        assertThat(response.company).isNotNull
     }
 
     @Test

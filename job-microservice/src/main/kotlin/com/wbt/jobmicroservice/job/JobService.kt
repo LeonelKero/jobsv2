@@ -7,12 +7,11 @@ import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 
 @Service
-class JobService(private val jobRepository: JobRepository) {
+class JobService(private val jobRepository: JobRepository, private val restTemplate: RestTemplate) {
 
     private val companyServiceUrl: String = "http://localhost:8082/api/v1/companies"
 
     fun findAll(): List<JobResponse> {
-        val restTemplate = RestTemplate()
         return jobRepository
             .findAll()
             .stream()
@@ -23,7 +22,6 @@ class JobService(private val jobRepository: JobRepository) {
 
     fun findById(jobId: Long): JobResponse {
         val result = jobRepository.findById(jobId)
-        val restTemplate = RestTemplate()
         if (result.isEmpty) throw JobNotFoundException("Job resource with Id $jobId not found")
         return result.map { toJobResponse(it, restTemplate) }.get()
     }
@@ -44,12 +42,10 @@ class JobService(private val jobRepository: JobRepository) {
 
     fun jobsWithMaxSalaryRange(maxLow: Double, maxTop: Double): List<JobResponse> {
         val jobs = jobRepository.findByMaxSalaryBetween(maxLow, maxTop)
-        val restTemplate = RestTemplate()
         return jobs.stream().map { toJobResponse(it, restTemplate) }.toList()
     }
 
     fun jobsWithMinSalaryRange(minLow: Double, minTop: Double): List<JobResponse> {
-        val restTemplate = RestTemplate()
         return jobRepository
             .findByMinSalaryBetween(minLow, minTop)
             .stream()
