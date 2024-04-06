@@ -14,6 +14,8 @@ This is a microservice application is a remake of previous project, made using d
 * Kotlin
 * Spring Web
 * Spring Data JPA
+* Gradle
+* Maven
 * H2
 * Postgresql
 * Actuator
