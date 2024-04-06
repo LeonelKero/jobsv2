@@ -4,9 +4,9 @@ This is a microservice application is a remake of previous project, made using d
 
 ## Modules
 
-* Job service
-* Company service
-* Review service
+* Job service (kotlin)
+* Company service (java)
+* Review service (java)
 
 ## Technologies 
 
