@@ -18,7 +18,7 @@ class JobController(private val jobService: JobService) {
         ResponseEntity(jobService.jobsWithMinSalaryRange(low, top), HttpStatus.OK)
 
     @GetMapping(path = ["/max/salary"])
-    fun jobsHightSalaries(@PathVariable low: Double, @PathVariable top: Double) =
+    fun jobsHeightSalaries(@PathVariable low: Double, @PathVariable top: Double) =
         ResponseEntity(jobService.jobsWithMaxSalaryRange(low, top), HttpStatus.OK)
 
     @PostMapping
