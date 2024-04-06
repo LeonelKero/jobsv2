@@ -172,7 +172,7 @@ class CompanyControllerTest {
     @Test
     void whenTryingToRemoveNonExistingCompanyGetBadRequest() {
         // GIVEN
-        final var nonExistingcompany = -1L;
+        final var nonExistingCompany = -1L;
         // WHEN
         final var response = restTemplate
                 .exchange(
@@ -180,7 +180,7 @@ class CompanyControllerTest {
                         HttpMethod.DELETE,
                         null,
                         String.class,
-                        nonExistingcompany);
+                        nonExistingCompany);
         // THEN
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
