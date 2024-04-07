@@ -11,7 +11,7 @@ abstract class AbstractTestContainerTest {
     companion object{
         @Container
         @ServiceConnection
-        val postgreSQLContainer = PostgreSQLContainer("postgres:16")
+        val postgreSQLContainer = PostgreSQLContainer<Nothing>("postgres:16")
     }
 
  }
