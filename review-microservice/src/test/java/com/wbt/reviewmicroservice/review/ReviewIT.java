@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ReviewControllerTest {
+class ReviewIT {
 
     private static final String URI = "/api/v1/reviews";
     @Autowired
