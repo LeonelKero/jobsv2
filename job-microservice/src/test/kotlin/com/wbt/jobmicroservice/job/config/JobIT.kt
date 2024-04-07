@@ -1,10 +1,8 @@
 package com.wbt.jobmicroservice.job.config
 
+import com.wbt.jobmicroservice.job.JobRepository
 import com.wbt.jobmicroservice.job.JobResponse
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,18 +19,12 @@ class JobIT : AbstractTestContainerTest() {
     @Autowired
     private lateinit var testRestTemplate: TestRestTemplate
 
-    companion object {
-        @JvmStatic
-        @BeforeAll
-        fun setUp(): Unit {
-            postgreSQLContainer.start()
-        }
+    @Autowired
+    private lateinit var jobRepository: JobRepository
 
-        @JvmStatic
-        @AfterAll
-        fun tearDown(): Unit {
-            postgreSQLContainer.stop()
-        }
+    @BeforeEach
+    fun setUp() {
+        jobRepository.deleteAll()
     }
 
     @Test

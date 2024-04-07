@@ -45,9 +45,16 @@ class CompanyIT {
     @Test
     void companies() {
         // GIVEN // WHEN
-        final var responses = restTemplate.getForObject(URI, CompanyResponse[].class);
+        final var response = restTemplate
+                .exchange(
+                        URI,
+                        HttpMethod.GET,
+                        null,
+                        CompanyResponse[].class
+                );
         // THEN
-        assertThat(responses).isEmpty();
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isEmpty();
     }
 
     @Test
