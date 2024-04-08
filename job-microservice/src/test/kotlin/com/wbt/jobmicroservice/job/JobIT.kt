@@ -43,5 +43,6 @@ class JobIT : AbstractTestContainerTest() {
         )
         // THEN
         assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
+        assertThat(response.body?.size).isEqualTo(0)
     }
 }
