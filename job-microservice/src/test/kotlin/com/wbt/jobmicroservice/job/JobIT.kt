@@ -1,7 +1,6 @@
-package com.wbt.jobmicroservice.job.config
+package com.wbt.jobmicroservice.job
 
-import com.wbt.jobmicroservice.job.JobRepository
-import com.wbt.jobmicroservice.job.JobResponse
+import com.wbt.jobmicroservice.job.config.AbstractTestContainerTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
