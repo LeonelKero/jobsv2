@@ -7,6 +7,7 @@ This is a microservice application is a remake of previous project, made using d
 * Job service (kotlin)
 * Company service (java)
 * Review service (java)
+* Discovery server (kotlin)
 
 ## Technologies 
 
