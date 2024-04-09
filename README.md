@@ -23,6 +23,8 @@ This is a microservice application is a remake of previous project, made using d
 * TestContainers
 * TestRestTemplate
 * WebTestClient
+* Eureka Client
+* Eureka Server
 
 ## Topics
 
@@ -36,6 +38,7 @@ This is a microservice application is a remake of previous project, made using d
 * docker compose file
 * Unit tests
 * Integration tests
+* Service discovery
 
 ## Credit
  `Happy Coding 🔥`
