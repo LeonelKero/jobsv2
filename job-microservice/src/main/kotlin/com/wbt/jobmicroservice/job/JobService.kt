@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate
 @Service
 class JobService(private val jobRepository: JobRepository, private val restTemplate: RestTemplate) {
 
-    private val companyServiceUrl: String = "http://localhost:8082/api/v1/companies"
+    private val companyServiceUrl: String = "http://COMPANY-MICROSERVICE:8082/api/v1/companies"
 
     fun findAll(): List<JobResponse> {
         return jobRepository
