@@ -8,6 +8,7 @@ This is a microservice application is a remake of previous project, made using d
 * Company service (java)
 * Review service (java)
 * Discovery server (kotlin)
+* Config server (kotlin)
 
 ## Technologies 
 
@@ -15,6 +16,7 @@ This is a microservice application is a remake of previous project, made using d
 * Kotlin
 * Spring Web
 * Spring Data JPA
+* Spring Config Server
 * Gradle
 * Maven
 * H2
