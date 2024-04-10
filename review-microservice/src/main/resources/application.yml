@@ -12,5 +12,11 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
 
+# Zipkin
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+
 server:
   port: 8083
