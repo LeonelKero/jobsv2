@@ -1,16 +1,19 @@
 package com.wbt.jobmicroservice.job
 
+import com.wbt.jobmicroservice.job.clients.CompanyClient
+import com.wbt.jobmicroservice.job.clients.ReviewClient
 import com.wbt.jobmicroservice.job.exception.JobNotFoundException
 import com.wbt.jobmicroservice.job.exception.UnSupportedJobOperationException
-import com.wbt.jobmicroservice.job.external.CompanyResponse
-import com.wbt.jobmicroservice.job.external.ReviewResponse
-import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
-import org.springframework.web.client.exchange
 
 @Service
-class JobService(private val jobRepository: JobRepository, private val restTemplate: RestTemplate) {
+class JobService(
+    private val jobRepository: JobRepository,
+    private val restTemplate: RestTemplate,
+    private val companyClient: CompanyClient,
+    private val reviewClient: ReviewClient
+) {
 
     private val companyServiceUrl: String = "http://COMPANY-MICROSERVICE:8082/api/v1/companies"
     private val reviewsServiceUrl: String = "http://REVIEW-MICROSERVICE:8083/api/v1/reviews"
@@ -88,13 +91,7 @@ class JobService(private val jobRepository: JobRepository, private val restTempl
         it.minSalary,
         it.createdAt!!,
         it.location,
-        restTemplate.getForObject("$companyServiceUrl/{id}", CompanyResponse::class.java, it.companyId),
-        restTemplate.exchange(
-            "$reviewsServiceUrl?company={id}",
-            HttpMethod.GET,
-            null,
-            Array<ReviewResponse>::class.java,
-            it.companyId
-        ).body
+        companyClient.getCompany(it.companyId),
+        reviewClient.getCompanyReviews(it.companyId)
     )
 }
