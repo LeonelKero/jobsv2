@@ -26,6 +26,7 @@ This is a microservice application is a remake of previous project, made using d
 * WebTestClient
 * Eureka Client
 * Eureka Server
+* OpenFeign
 
 ## Topics
 
@@ -35,7 +36,7 @@ This is a microservice application is a remake of previous project, made using d
 * Spring annotations
 * n-tier architecture
 * Development profiles (dev, pro)
-* Service communication
+* Inter-service communication
 * docker compose file
 * Unit tests
 * Integration tests
