@@ -27,6 +27,8 @@ This is a microservice application is a remake of previous project, made using d
 * Eureka Client
 * Eureka Server
 * OpenFeign
+* Zipkin
+* Micrometer
 
 ## Topics
 
@@ -41,6 +43,7 @@ This is a microservice application is a remake of previous project, made using d
 * Unit tests
 * Integration tests
 * Service discovery
+* Distributed system tracing
 
 ## Credit
  `Happy Coding 🔥`
