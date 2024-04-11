@@ -4,3 +4,6 @@ spring:
       server:
         git:
           uri: https://github.com/LeonelKero/application-config
+
+  config:
+    import: optional:configserver:http://localhost:8085
