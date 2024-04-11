@@ -16,7 +16,7 @@ This is a microservice application is a remake of previous project, made using d
 * Kotlin
 * Spring Web
 * Spring Data JPA
-* Spring Config Server
+* Spring Cloud Config
 * Gradle
 * Maven
 * H2
