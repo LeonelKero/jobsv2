@@ -1,4 +1,5 @@
 services:
+  # Postgres Database Service
   postgres:
     container_name: postgres16_monolith
     image: postgres:16
@@ -14,6 +15,7 @@ services:
       - postgres
     restart: unless-stopped
 
+  # Postgres Database UI Service
   pgadmin:
     container_name: pgadmin4_monolith
     image: dpage/pgadmin4:8.4
@@ -29,6 +31,7 @@ services:
       - postgres
     restart: unless-stopped
 
+  # Zipkin Service
   zipkin:
     container_name: zipkin-c
     image: openzipkin/zipkin:3
@@ -37,10 +40,12 @@ services:
     networks:
       - postgres
 
+# Network
 networks:
   postgres:
     driver: bridge
 
+# Volumes
 volumes:
   postgres:
   pgadmin:
